@@ -15,7 +15,7 @@ class MongoDBClient:
 
             if MongoDBClient.client is None:
 
-                mongo_db_url = os.getenv(MONGODB_URL_KEY)
+                mongo_db_url = MONGO_DB_URL_ENV_KEY #os.getenv(MONGODB_URL_KEY)
 
                 print(mongo_db_url)
 
