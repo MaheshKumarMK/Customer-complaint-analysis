@@ -1,4 +1,6 @@
 
 *complaint.egg-info
 *.vscode
+*finance_artifact
+*logs
 
