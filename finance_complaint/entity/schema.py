@@ -59,7 +59,7 @@ class FinanceDataSchema:
     def one_hot_encoding_features(self) -> List[str]:
         features = [
             self.col_company_response,
-            self.col_consumer_consent_provided,
+            # self.col_consumer_consent_provided,
             self.col_submitted_via,
         ]
         return features
@@ -84,6 +84,10 @@ class FinanceDataSchema:
         return features
 
     @property
+    def tfidf_feature(self) -> List[str]:
+        return [self.col_issue]
+
+    @property
     def derived_input_features(self) -> List[str]:
         features = [
             self.col_date_sent_to_company,
@@ -103,9 +107,6 @@ class FinanceDataSchema:
     def im_numerical_columns(self) -> List[str]:
         return [f"im_{col}" for col in self.numerical_columns]
 
-    @property
-    def tfidf_feature(self) -> List[str]:
-        return [self.col_issue]
 
     @property
     def tf_tfidf_features(self) -> List[str]:
