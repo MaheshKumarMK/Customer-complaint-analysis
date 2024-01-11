@@ -4,11 +4,12 @@ import json
 from datetime import datetime
 from time import strftime
 
-from finance_complaint.entity.config_entity import DataIngestionConfig, TrainingPipelineConfig, DataValidationConfig, DataTransformationConfig
+from finance_complaint.entity.config_entity import DataIngestionConfig, TrainingPipelineConfig, DataValidationConfig, DataTransformationConfig, ModelTrainerConfig
 from finance_complaint.constant.training_pipeline_config import *
 from finance_complaint.constant.training_pipeline_config.data_ingestion import *
 from finance_complaint.constant.training_pipeline_config.data_validation import *
 from finance_complaint.constant.training_pipeline_config.data_transformation import *
+from finance_complaint.constant.training_pipeline_config.model_trainer import *
 from finance_complaint.constant import TIMESTAMP
 
 from finance_complaint.entity.metadata_entity import DataIngestionMetadata
@@ -149,3 +150,24 @@ class FinanceConfig:
             return data_transformation_config
         except Exception as e:
             raise FinanceException(e, sys)
+    
+    def get_model_trainer_config(self) -> ModelTrainerConfig:
+        try:
+            model_trainer_dir = os.path.join(self.pipeline_config.artifact_dir,
+                                             MODEL_TRAINER_DIR, self.timestamp)
+            trained_model_file_path = os.path.join(
+                model_trainer_dir, MODEL_TRAINER_TRAINED_MODEL_DIR, MODEL_TRAINER_MODEL_NAME
+            )
+            label_indexer_model_dir = os.path.join(
+                model_trainer_dir, MODEL_TRAINER_LABEL_INDEXER_DIR
+            )
+            model_trainer_config = ModelTrainerConfig(base_accuracy=MODEL_TRAINER_BASE_ACCURACY,
+                                                      trained_model_file_path=trained_model_file_path,
+                                                      metric_list=MODEL_TRAINER_MODEL_METRIC_NAMES,
+                                                      label_indexer_model_dir=label_indexer_model_dir
+                                                      )
+            logger.info(f"Model trainer config: {model_trainer_config}")
+            return model_trainer_config
+        except Exception as e:
+            raise FinanceException(e, sys)
+
